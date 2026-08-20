@@ -369,7 +369,19 @@ export default function App() {
         <TechStackSection />
         
         <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-700 to-transparent opacity-50"></div>
+
+        // ... dentro do return do App() ...
+
+        <TechStackSection />
         
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-700 to-transparent opacity-50"></div>
+        
+        {/* NOVA SEÇÃO ADICIONADA AQUI */}
+        <ProjectsSection />
+
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-gray-700 to-transparent opacity-50"></div>
+        
+        <ContactTerminal />
         <ContactTerminal />
         
         {/* Footer */}
