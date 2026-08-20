@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial, Sphere, Environment, Float, OrbitControls } from '@react-three/drei';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 import { Terminal, Code, Database, Globe, ChevronDown, Send, Layers, Cpu } from 'lucide-react';
 
 // ==========================================
@@ -143,7 +143,104 @@ const TechStackSection = () => {
     </section>
   );
 };
+// ==========================================
+// SEÇÃO DE PROJETOS (A Prova Social)
+// ==========================================
 
+const ProjectsSection = () => {
+  const { scrollYProgress } = useScroll();
+  
+  // Cria um efeito sutil onde os elementos sobem levemente enquanto a tela desce
+  const yParallaxFast = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const yParallaxSlow = useTransform(scrollYProgress, [0, 1], [0, -50]);
+
+  const projects = [
+    {
+      title: "Motor Verde: Mobilidade Sustentável",
+      description: "Aplicativo multiplataforma para gestão de mobilidade urbana inteligente. Integração de rotas, telemetria em tempo real e backend analítico para redução da pegada de carbono.",
+      techs: ["Unity", "Flutter", "Python", "Node.js"],
+      featured: true, // Card maior
+      color: "from-emerald-500/20 to-teal-900/40",
+      border: "border-emerald-500/30"
+    },
+    {
+      title: "Pet Personale",
+      description: "Plataforma comercial para banho e tosa. Sistema de agendamento online, gestão de clientes e interface responsiva focada na conversão de serviços locais.",
+      techs: ["React", "Express", "MongoDB"],
+      featured: false,
+      color: "from-indigo-500/20 to-blue-900/40",
+      border: "border-indigo-500/30"
+    },
+    {
+      title: "Automação Industrial & IoT",
+      description: "Dashboard para monitoramento de infraestrutura mecânica e elétrica. Coleta de dados de sensores, análise de falhas preditivas e controle de sistemas de ar comprimido.",
+      techs: ["React", "PostgreSQL", "C++"],
+      featured: false,
+      color: "from-rose-500/20 to-orange-900/40",
+      border: "border-rose-500/30"
+    }
+  ];
+
+  return (
+    <section id="projetos" className="min-h-screen py-24 px-4 relative z-10">
+      <div className="max-w-6xl mx-auto w-full">
+        
+        <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Soluções em Ação</h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Arquitetura de software aplicada para resolver desafios reais. Da automação industrial à mobilidade urbana.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projects.map((project, index) => (
+            <motion.div
+              key={index}
+              style={{ y: project.featured ? yParallaxSlow : yParallaxFast }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className={`
+                relative overflow-hidden rounded-2xl border p-8 flex flex-col justify-between group
+                bg-gradient-to-br ${project.color} ${project.border}
+                ${project.featured ? 'md:col-span-2 min-h-[350px]' : 'min-h-[300px]'}
+                hover:border-white/40 transition-colors duration-500 backdrop-blur-md
+              `}
+            >
+              {/* Efeito de brilho ao passar o mouse */}
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
+
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">{project.title}</h3>
+                <p className="text-gray-300 md:text-lg leading-relaxed mb-8 max-w-3xl">
+                  {project.description}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {project.techs.map((tech, i) => (
+                  <span 
+                    key={i} 
+                    className="px-3 py-1 bg-black/40 border border-white/10 rounded-full text-xs font-mono text-gray-300"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 const ContactTerminal = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('idle'); // idle, submitting, success
